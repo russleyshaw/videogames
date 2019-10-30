@@ -1,0 +1,12 @@
+{
+    "private": true,
+    "workspaces": [
+        "server",
+        "site",
+        "common"
+    ],
+    "scripts": {
+        "build": "yarn workspace common build && yarn workspace site build && yarn workspace server build",
+        "start": "yarn workspace server start"
+    }
+}
