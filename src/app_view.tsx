@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Classes, Dialog, ControlGroup, InputGroup, Button } from "@blueprintjs/core";
+import { Classes, Dialog, ControlGroup, InputGroup, Button, Spinner } from "@blueprintjs/core";
 
 import AppModel from "./app_model";
 import { IGameInfo } from "./gbapi";
@@ -43,21 +43,28 @@ export default observer((props: IAppProps) => {
             <div className="app">
                 <div className="app-header">
                     <Button text="Reset API Key" icon="key" onClick={() => model.clearApiKey()} />
-                    <Button text="Force update" icon="refresh" onClick={() => model.updateGames()} />
+                    <Button disabled={model.isLoadingGames} text="Force update" icon="refresh" onClick={() => model.updateGames(true)} />
+                    <span>Last updated: {model.lastCached ? moment(model.lastCached).fromNow() : "Never"}</span>
                 </div>
                 <div className="app-body">
                     <div className="game-list-section">
-                        <h1>Released Games</h1>
+                        <div>
+                            <h1>Upcoming Games </h1>
+                            {model.isLoadingGames && <Spinner />}
+                        </div>
                         <div className="game-list">
-                            {model.getReleasedGames().map(g => (
+                            {model.getUpcomingGames().map(g => (
                                 <GameEntry {...g} />
                             ))}
                         </div>
                     </div>
                     <div className="game-list-section">
-                        <h1>Upcoming Games</h1>
+                        <div>
+                            <h1>Released Games</h1>
+                            {model.isLoadingGames && <Spinner />}
+                        </div>
                         <div className="game-list">
-                            {model.getUpcomingGames().map(g => (
+                            {model.getReleasedGames().map(g => (
                                 <GameEntry {...g} />
                             ))}
                         </div>
