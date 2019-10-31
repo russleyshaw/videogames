@@ -1,6 +1,0 @@
-{
-    "exec": "yarn dev",
-    "watch": ["./src/**/*.ts"],
-    "delay": "5000",
-    "ext": "ts"
-}

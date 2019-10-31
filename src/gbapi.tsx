@@ -1,5 +1,17 @@
+import React from "react";
+
+export interface IGameInfo {
+    id: number;
+    name: string;
+    release: Date;
+    platforms: string[];
+}
+
 import * as path from "path";
-import moment = require("moment");
+import moment from "moment";
+import fetchJsonp from "fetch-jsonp";
+import { appToaster, toastGBApiBlocked } from "./toaster";
+import { Intent } from "@blueprintjs/core";
 
 export interface IGbApiGamesResult {
     id: number;
@@ -31,50 +43,46 @@ export interface IGBApiGames {
 }
 
 export interface IGBApiGamesOptions {
+    apiKey: string;
     offset?: number;
     expected_release_day?: number;
     expected_release_month?: number;
     expected_release_year?: number;
 }
+export async function getGames(options: IGBApiGamesOptions): Promise<IGBApiGames> {
+    const url = new URL("https://giantbomb.com/api/games");
+    url.searchParams.set("format", "jsonp");
+    url.searchParams.set("api_key", options.apiKey);
+    const filters = [];
 
-export class GBApi {
-    apiKey: string;
-    apiBaseUrl: string;
-
-    constructor(apiKey: string) {
-        this.apiKey = apiKey;
-        this.apiBaseUrl = "https://www.giantbomb.com/api/";
+    if (options) {
+        if (options.expected_release_day != null) {
+            filters.push(`expected_release_day:${options.expected_release_day.toString()}`);
+        }
+        if (options.expected_release_month != null) {
+            filters.push(`expected_release_month:${options.expected_release_month.toString()}`);
+        }
+        if (options.expected_release_year != null) {
+            filters.push(`expected_release_year:${options.expected_release_year.toString()}`);
+        }
+        if (options.offset != null) {
+            url.searchParams.set("offset", options.offset.toString());
+        }
     }
 
-    async getGames(options?: IGBApiGamesOptions): Promise<IGBApiGames> {
-        const url = new URL(this.apiBaseUrl);
-        url.pathname = path.join(url.pathname, "games");
-        url.searchParams.set("format", "json");
-        url.searchParams.set("api_key", this.apiKey);
-        const filters = [];
+    if (filters.length > 0) {
+        url.searchParams.set("filter", filters.join(","));
+    }
 
-        if (options) {
-            if (options.expected_release_day != null) {
-                filters.push(`expected_release_day:${options.expected_release_day.toString()}`);
-            }
-            if (options.expected_release_month != null) {
-                filters.push(`expected_release_month:${options.expected_release_month.toString()}`);
-            }
-            if (options.expected_release_year != null) {
-                filters.push(`expected_release_year:${options.expected_release_year.toString()}`);
-            }
-            if (options.offset != null) {
-                url.searchParams.set("offset", options.offset.toString());
-            }
-        }
+    try {
+        const result = await fetchJsonp(url.toString(), { jsonpCallback: "json_callback" }).then(function(r) {
+            return r.json();
+        });
 
-        if (filters.length > 0) {
-            url.searchParams.set("filter", filters.join(","));
-        }
-
-        const result = await fetch(url.toString());
-
-        return result.json();
+        return result;
+    } catch (e) {
+        toastGBApiBlocked();
+        throw e;
     }
 }
 
