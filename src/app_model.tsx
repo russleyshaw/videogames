@@ -1,5 +1,5 @@
 import { observable } from "mobx";
-import moment = require("moment");
+import moment from "moment";
 import { Intent } from "@blueprintjs/core";
 
 import { IGameInfo, getGames, getEstimatedReleaseDate } from "./gbapi";

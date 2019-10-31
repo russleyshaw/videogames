@@ -1,10 +1,10 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { Classes, Dialog, ControlGroup, InputGroup, Button, Spinner } from "@blueprintjs/core";
+import moment from "moment";
 
 import AppModel from "./app_model";
 import { IGameInfo } from "./gbapi";
-import moment from "moment";
 
 export interface IAppProps {
     model: AppModel;
@@ -19,10 +19,16 @@ export default observer((props: IAppProps) => {
         <>
             <Dialog isOpen={model.apiKey == null}>
                 <div className={Classes.DIALOG_HEADER}>
-                    <h3>We need your key!</h3>
+                    <h3>We need your Giant Bomb API key!</h3>
                 </div>
 
                 <div className={Classes.DIALOG_BODY}>
+                    <p>
+                        Get your key at{" "}
+                        <a href="https://www.giantbomb.com/api/" target="_blank">
+                            https://www.giantbomb.com/api/
+                        </a>
+                    </p>
                     <ControlGroup fill>
                         <InputGroup
                             value={apiKeyInput}
@@ -39,6 +45,7 @@ export default observer((props: IAppProps) => {
                         />
                     </ControlGroup>
                 </div>
+                <div className={Classes.DIALOG_FOOTER}>Your key is stored locally.</div>
             </Dialog>
             <div className="app">
                 <div className="app-header">

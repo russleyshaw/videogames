@@ -1,6 +1,5 @@
 import React from "react";
 import { Toaster, Intent } from "@blueprintjs/core";
-import moment from "moment";
 
 export const appToaster = Toaster.create({
     position: "top"

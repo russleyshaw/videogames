@@ -1,4 +1,7 @@
-import React from "react";
+import fetchJsonp from "fetch-jsonp";
+import moment from "moment";
+
+import { toastGBApiBlocked } from "./toaster";
 
 export interface IGameInfo {
     id: number;
@@ -6,12 +9,6 @@ export interface IGameInfo {
     release: Date;
     platforms: string[];
 }
-
-import * as path from "path";
-import moment from "moment";
-import fetchJsonp from "fetch-jsonp";
-import { appToaster, toastGBApiBlocked } from "./toaster";
-import { Intent } from "@blueprintjs/core";
 
 export interface IGbApiGamesResult {
     id: number;
