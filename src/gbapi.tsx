@@ -7,6 +7,7 @@ export interface IGameInfo {
     id: number;
     name: string;
     release: Date;
+    link: string;
     platforms: string[];
 }
 
@@ -15,6 +16,7 @@ export interface IGbApiGamesResult {
     guid: string;
     name: string;
     deck: string;
+    site_detail_url: string;
 
     original_release_date?: string;
 

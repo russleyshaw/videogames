@@ -101,6 +101,13 @@ export default class AppModel {
 
         const apiKey = this.apiKey;
         this.isLoadingGames = true;
+        appToaster.show(
+            {
+                message: "Loading new releases..."
+            },
+            "loading-releases"
+        );
+
         const responses = await Promise.all(
             [now, nextMonth, lastMonth].map(date =>
                 getGames({
@@ -122,12 +129,20 @@ export default class AppModel {
                     id: entry.id,
                     name: entry.name,
                     platforms: (entry.platforms || []).map(p => p.abbreviation),
-                    release
+                    release,
+                    link: entry.site_detail_url
                 });
             }
         }
 
         this.saveGameCache();
+        appToaster.show(
+            {
+                message: `Loaded ${this.games.size} releases!`,
+                intent: Intent.SUCCESS
+            },
+            "loading-releases"
+        );
         this.isLoadingGames = false;
     }
 

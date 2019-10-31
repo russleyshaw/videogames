@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Classes, Dialog, ControlGroup, InputGroup, Button, Spinner } from "@blueprintjs/core";
+import { Classes, Dialog, ControlGroup, InputGroup, Button, Spinner, HTMLTable, Icon, H1 } from "@blueprintjs/core";
 import moment from "moment";
 
 import AppModel from "./app_model";
@@ -54,39 +54,33 @@ export default observer((props: IAppProps) => {
                     <span>Last updated: {model.lastCached ? moment(model.lastCached).fromNow() : "Never"}</span>
                 </div>
                 <div className="app-body">
-                    <div className="game-list-section">
-                        <div>
-                            <h1>Upcoming Games </h1>
-                            {model.isLoadingGames && <Spinner />}
-                        </div>
-                        <div className="game-list">
-                            {model.getUpcomingGames().map(g => (
-                                <GameEntry {...g} />
-                            ))}
-                        </div>
-                    </div>
-                    <div className="game-list-section">
-                        <div>
-                            <h1>Released Games</h1>
-                            {model.isLoadingGames && <Spinner />}
-                        </div>
-                        <div className="game-list">
-                            {model.getReleasedGames().map(g => (
-                                <GameEntry {...g} />
-                            ))}
-                        </div>
-                    </div>
+                    <H1>Upcoming Games </H1>
+                    <H1>Released Games</H1>
+                    <GameTable games={model.getUpcomingGames()} />
+                    <GameTable games={model.getReleasedGames()} />
                 </div>
             </div>
         </>
     );
 });
 
-function GameEntry(props: IGameInfo) {
+const GameTable = observer((props: { games: IGameInfo[] }) => {
     return (
-        <>
-            <span>{props.name}</span>
-            <span>{moment(props.release).fromNow()}</span>
-        </>
+        <HTMLTable className="game-table" striped interactive condensed>
+            <thead>
+                <td>Name</td>
+                <td>Platforms</td>
+                <td>Release</td>
+            </thead>
+            <tbody>
+                {props.games.map(g => (
+                    <tr title={g.link} onDoubleClick={() => window.open(g.link)}>
+                        <td>{g.name}</td>
+                        <td>{g.platforms.join(", ")}</td>
+                        <td>{moment(g.release).fromNow()}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </HTMLTable>
     );
-}
+});
