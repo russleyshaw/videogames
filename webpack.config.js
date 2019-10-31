@@ -89,11 +89,13 @@ function buildConfig(env, argv) {
                 ignoreOrder: false // Enable to remove warnings about conflicting order,
             }),
             new webpack.DefinePlugin({
-                "process.env.NODE_ENV": JSON.stringify(mode)
+                "process.env.NODE_ENV": JSON.stringify(mode),
+                "process.env.BASE_PATH": JSON.stringify(BASE_PATH)
             })
         ],
         devServer: {
-            hot: true
+            hot: true,
+            publicPath: BASE_PATH
         }
     };
 }

@@ -20,6 +20,8 @@ jobs:
 
             - name: Build
               run: yarn build
+              env:
+                  BASE_PATH: /videogames/
 
             - name: Prepare for deployment
               run: touch dist/.nojekyll

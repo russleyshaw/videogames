@@ -1,10 +1,10 @@
 import { observable } from "mobx";
+import moment = require("moment");
+import { Intent } from "@blueprintjs/core";
 
 import { IGameInfo, getGames, getEstimatedReleaseDate } from "./gbapi";
-import { compareDates, HOURS_TO_MS } from "./util";
-import moment = require("moment");
-import { toastGamesRecentlyPolled, appToaster } from "./toaster";
-import { Intent } from "@blueprintjs/core";
+import { compareDates } from "./util";
+import { appToaster } from "./toaster";
 
 const APIKEY_KEY = "apiKey";
 const LASTPULLED_KEY = "lastPulled";
