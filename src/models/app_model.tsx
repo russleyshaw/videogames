@@ -20,6 +20,9 @@ export default class AppModel {
     @observable
     isSettingsOpen: boolean = false;
 
+    @observable
+    isAboutOpen: boolean = false;
+
     constructor() {
         this.loadGameCache();
     }

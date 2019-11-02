@@ -27,13 +27,14 @@ export default class SettingsModel {
         }
 
         autorun(() => {
-            console.log("Saving platform format...");
             localStorage.setItem(keys.PLATFORM_FORMAT, this.platformStyle);
         });
         autorun(() => {
-            console.log("Saving api key...");
-            if (this.apiKey != null) localStorage.setItem(keys.API_KEY, this.apiKey);
-            else localStorage.removeItem(keys.API_KEY);
+            if (this.apiKey != null && this.apiKey != "") {
+                localStorage.setItem(keys.API_KEY, this.apiKey);
+            } else {
+                localStorage.removeItem(keys.API_KEY);
+            }
         });
     }
 

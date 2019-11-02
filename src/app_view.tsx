@@ -1,30 +1,14 @@
 import React from "react";
-import { observer, useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 import moment from "moment";
 
 import AppModel from "./models/app_model";
 import { IGameInfo } from "./gbapi";
 
-import {
-    Button,
-    Sidebar,
-    Table,
-    Input,
-    Menu,
-    Modal,
-    ButtonProps,
-    Icon,
-    Popup,
-    SemanticICONS,
-    SemanticCOLORS,
-    Label,
-    Message,
-    Checkbox,
-    IconProps
-} from "semantic-ui-react";
-import { observable } from "mobx";
-import SettingsModel, { PlatformStyle } from "./models/settings_model";
+import { Button, Table, Input, Menu, Modal, ButtonProps, Message, Checkbox, IconProps } from "semantic-ui-react";
+import SettingsModel from "./models/settings_model";
 import PlatformIcons from "./components/PlatformIcons";
+import AboutDialog from "./components/AboutDialog";
 
 interface IModels {
     app: AppModel;
@@ -37,9 +21,11 @@ export default observer((props: IModels) => {
     return (
         <>
             <SettingsDrawer {...props} />
+            <AboutDialog isOpen={app.isAboutOpen} onClose={() => (app.isAboutOpen = false)} />
             <Menu>
                 <Menu.Item header>Video Games</Menu.Item>
                 <Menu.Menu position="right">
+                    <Menu.Item icon="info" onClick={() => (app.isAboutOpen = true)} />
                     <Menu.Item
                         disabled={app.isLoadingGames}
                         onClick={() => app.updateGames()}
@@ -48,7 +34,7 @@ export default observer((props: IModels) => {
                     <Menu.Item icon="setting" onClick={() => (app.isSettingsOpen = true)} />
                 </Menu.Menu>
             </Menu>
-            {settings.apiKey == null && <Message negative>No Giant Bomb API provided.</Message>}
+            {settings.apiKey == null && <Message negative>No Giant Bomb API provided. Add it in the settings.</Message>}
             <div className="game-tables">
                 <GameTable settings={settings} title="Upcoming Games" games={app.upcomingGames} loading={app.isLoadingGames} />
                 <GameTable settings={settings} title="Released Games" games={app.releasedGames} loading={app.isLoadingGames} />
