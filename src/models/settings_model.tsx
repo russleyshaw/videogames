@@ -1,6 +1,7 @@
 import { observable, autorun, action } from "mobx";
 
 import * as keys from "../local_store_key";
+import { contains } from "../util";
 
 export type PlatformStyle = "icons" | "text";
 export const PLATFORM_STYLES: PlatformStyle[] = ["icons", "text"];
@@ -20,7 +21,7 @@ export default class SettingsModel {
         this.platformStyle = "icons";
         let platformStyle = localStorage.getItem(keys.PLATFORM_FORMAT);
         platformStyle = platformStyle != null ? platformStyle.trim() : null;
-        if (platformStyle != null && PLATFORM_STYLES.includes(platformStyle as PlatformStyle)) {
+        if (platformStyle != null && contains(PLATFORM_STYLES, platformStyle as PlatformStyle)) {
             this.platformStyle = platformStyle as PlatformStyle;
             console.log(`Loaded ${keys.PLATFORM_FORMAT}`, this.platformStyle);
         }
