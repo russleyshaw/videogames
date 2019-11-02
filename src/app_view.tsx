@@ -5,7 +5,7 @@ import moment from "moment";
 import AppModel from "./models/app_model";
 import { IGameInfo } from "./gbapi";
 
-import { Button, Table, Input, Menu, Modal, ButtonProps, Message, Checkbox, IconProps } from "semantic-ui-react";
+import { Button, Table, Input, Menu, Modal, ButtonProps, Message, Checkbox, IconProps, Icon } from "semantic-ui-react";
 import SettingsModel from "./models/settings_model";
 import PlatformIcons from "./components/PlatformIcons";
 import AboutDialog from "./components/AboutDialog";
@@ -20,7 +20,7 @@ export default observer((props: IModels) => {
 
     return (
         <>
-            <SettingsDrawer {...props} />
+            <SettingsDialog {...props} />
             <AboutDialog isOpen={app.isAboutOpen} onClose={() => (app.isAboutOpen = false)} />
             <Menu>
                 <Menu.Item header>Video Games</Menu.Item>
@@ -34,7 +34,14 @@ export default observer((props: IModels) => {
                     <Menu.Item icon="setting" onClick={() => (app.isSettingsOpen = true)} />
                 </Menu.Menu>
             </Menu>
-            {settings.apiKey == null && <Message negative>No Giant Bomb API provided. Add it in the settings.</Message>}
+            {settings.apiKey == null && (
+                <Message negative>
+                    Add your Giant Bomb API key in the <Icon fitted name="setting" /> settings. You can get your key from{" "}
+                    <a href="https://giantbomb.com/api" target="_blank">
+                        here!
+                    </a>
+                </Message>
+            )}
             <div className="game-tables">
                 <GameTable settings={settings} title="Upcoming Games" games={app.upcomingGames} loading={app.isLoadingGames} />
                 <GameTable settings={settings} title="Released Games" games={app.releasedGames} loading={app.isLoadingGames} />
@@ -43,7 +50,7 @@ export default observer((props: IModels) => {
     );
 });
 
-const SettingsDrawer = observer((props: IModels) => {
+const SettingsDialog = observer((props: IModels) => {
     const { app, settings } = props;
 
     const [apiKeyInput, setApiKeyInput] = React.useState(settings.apiKey || "");
@@ -64,7 +71,9 @@ const SettingsDrawer = observer((props: IModels) => {
                         onChange={(e, data) => setApiKeyInput(data.value)}
                         placeholder="YOUR_GB_API_KEY"
                         type="text"
-                        action={{ primary: true, content: "Save", onClick: () => (settings.apiKey = apiKeyInput) } as ButtonProps}
+                        action={
+                            { icon: "save", primary: true, content: "Save", onClick: () => (settings.apiKey = apiKeyInput) } as ButtonProps
+                        }
                     />
                 </p>
                 <p>

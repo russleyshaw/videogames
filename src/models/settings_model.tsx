@@ -1,7 +1,6 @@
 import { observable, autorun, action } from "mobx";
 
 import * as keys from "../local_store_key";
-import { platform } from "os";
 
 export type PlatformStyle = "icons" | "text";
 export const PLATFORM_STYLES: PlatformStyle[] = ["icons", "text"];

@@ -1,5 +1,7 @@
 @import "semantic-ui-css/semantic.min.css";
 
+$information-phone: "only screen and (max-width : 600px)";
+
 html,
 body,
 #root {
@@ -9,19 +11,20 @@ body,
     padding: 0;
 }
 
-$information-phone: "only screen and (max-width : 600px)";
+#root {
+    padding: 24px;
+    @media #{$information-phone} {
+        padding: 0;
+    }
+}
 
 .game-tables {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin: 32px;
     column-gap: 32px;
-
-    overflow-x: auto;
+    row-gap: 32px;
 
     @media #{$information-phone} {
         grid-template-columns: 1fr;
-        margin: 0px;
-        row-gap: 32px;
     }
 }
