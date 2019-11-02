@@ -1,8 +1,6 @@
 import fetchJsonp from "fetch-jsonp";
 import moment from "moment";
 
-import { toastGBApiBlocked } from "./toaster";
-
 export interface IGameInfo {
     id: number;
     name: string;
@@ -73,16 +71,11 @@ export async function getGames(options: IGBApiGamesOptions): Promise<IGBApiGames
         url.searchParams.set("filter", filters.join(","));
     }
 
-    try {
-        const result = await fetchJsonp(url.toString(), { jsonpCallback: "json_callback" }).then(function(r) {
-            return r.json();
-        });
+    const result = await fetchJsonp(url.toString(), { jsonpCallback: "json_callback" }).then(function(r) {
+        return r.json();
+    });
 
-        return result;
-    } catch (e) {
-        toastGBApiBlocked();
-        throw e;
-    }
+    return result;
 }
 
 /**

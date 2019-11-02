@@ -1,86 +1,128 @@
 import React from "react";
-import { observer } from "mobx-react";
-import { Classes, Dialog, ControlGroup, InputGroup, Button, Spinner, HTMLTable, Icon, H1 } from "@blueprintjs/core";
+import { observer, useObserver } from "mobx-react";
 import moment from "moment";
 
-import AppModel from "./app_model";
+import AppModel from "./models/app_model";
 import { IGameInfo } from "./gbapi";
 
-export interface IAppProps {
-    model: AppModel;
+import {
+    Button,
+    Sidebar,
+    Table,
+    Input,
+    Menu,
+    Modal,
+    ButtonProps,
+    Icon,
+    Popup,
+    SemanticICONS,
+    SemanticCOLORS,
+    Label,
+    Message,
+    Checkbox,
+    IconProps
+} from "semantic-ui-react";
+import { observable } from "mobx";
+import SettingsModel, { PlatformStyle } from "./models/settings_model";
+import PlatformIcons from "./components/PlatformIcons";
+
+interface IModels {
+    app: AppModel;
+    settings: SettingsModel;
 }
 
-export default observer((props: IAppProps) => {
-    const { model } = props;
-
-    const [apiKeyInput, setApiKeyInput] = React.useState("");
+export default observer((props: IModels) => {
+    const { app, settings } = props;
 
     return (
         <>
-            <Dialog isOpen={model.apiKey == null}>
-                <div className={Classes.DIALOG_HEADER}>
-                    <h3>We need your Giant Bomb API key!</h3>
-                </div>
-
-                <div className={Classes.DIALOG_BODY}>
-                    <p>
-                        Get your key at{" "}
-                        <a href="https://www.giantbomb.com/api/" target="_blank">
-                            https://www.giantbomb.com/api/
-                        </a>
-                    </p>
-                    <ControlGroup fill>
-                        <InputGroup
-                            value={apiKeyInput}
-                            onChange={(e: any) => setApiKeyInput(e.target.value)}
-                            placeholder="YOUR_GB_API_KEY_HERE"
-                            fill
-                        />
-                        <Button
-                            text="Save"
-                            onClick={() => {
-                                setApiKeyInput("");
-                                model.setApiKey(apiKeyInput);
-                            }}
-                        />
-                    </ControlGroup>
-                </div>
-                <div className={Classes.DIALOG_FOOTER}>Your key is stored locally.</div>
-            </Dialog>
-            <div className="app">
-                <div className="app-header">
-                    <Button text="Reset API Key" icon="key" onClick={() => model.clearApiKey()} />
-                    <Button disabled={model.isLoadingGames} text="Force update" icon="refresh" onClick={() => model.updateGames(true)} />
-                    <span>Last updated: {model.lastCached ? moment(model.lastCached).fromNow() : "Never"}</span>
-                </div>
-                <div className="app-body">
-                    <H1>Upcoming Games </H1>
-                    <H1>Released Games</H1>
-                    <GameTable games={model.getUpcomingGames()} />
-                    <GameTable games={model.getReleasedGames()} />
-                </div>
+            <SettingsDrawer {...props} />
+            <Menu>
+                <Menu.Item header>Video Games</Menu.Item>
+                <Menu.Menu position="right">
+                    <Menu.Item
+                        disabled={app.isLoadingGames}
+                        onClick={() => app.updateGames()}
+                        icon={{ name: "refresh", loading: app.isLoadingGames } as IconProps}
+                    />
+                    <Menu.Item icon="setting" onClick={() => (app.isSettingsOpen = true)} />
+                </Menu.Menu>
+            </Menu>
+            {settings.apiKey == null && <Message negative>No Giant Bomb API provided.</Message>}
+            <div className="game-tables">
+                <GameTable settings={settings} title="Upcoming Games" games={app.upcomingGames} loading={app.isLoadingGames} />
+                <GameTable settings={settings} title="Released Games" games={app.releasedGames} loading={app.isLoadingGames} />
             </div>
         </>
     );
 });
 
-const GameTable = observer((props: { games: IGameInfo[] }) => {
+const SettingsDrawer = observer((props: IModels) => {
+    const { app, settings } = props;
+
+    const [apiKeyInput, setApiKeyInput] = React.useState(settings.apiKey || "");
+    React.useEffect(() => {
+        setApiKeyInput(settings.apiKey || "");
+    }, [settings.apiKey]);
+
     return (
-        <HTMLTable className="game-table" striped interactive condensed>
-            <thead>
-                <td>Name</td>
-                <td>Platforms</td>
-                <td>Release</td>
-            </thead>
-            <tbody>
-                {props.games.map(g => (
-                    <tr title={g.link} onDoubleClick={() => window.open(g.link)}>
-                        <td>{g.name}</td>
-                        <td>{g.platforms.join(", ")}</td>
-                        <td>{moment(g.release).fromNow()}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </HTMLTable>
+        <Modal closeOnDimmerClick={true} closeOnEscape={true} onClose={() => (app.isSettingsOpen = false)} open={app.isSettingsOpen}>
+            <Modal.Header>Settings</Modal.Header>
+            <Modal.Content>
+                <p>
+                    <Input
+                        label="Giant Bomb API Key"
+                        error={settings.apiKey == null}
+                        fluid
+                        value={apiKeyInput}
+                        onChange={(e, data) => setApiKeyInput(data.value)}
+                        placeholder="YOUR_GB_API_KEY"
+                        type="text"
+                        action={{ primary: true, content: "Save", onClick: () => (settings.apiKey = apiKeyInput) } as ButtonProps}
+                    />
+                </p>
+                <p>
+                    <Checkbox
+                        label="Platform Icons"
+                        toggle
+                        checked={settings.platformStyle === "icons"}
+                        onClick={() => settings.cyclePlatformStyle()}
+                    />
+                </p>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={() => (app.isSettingsOpen = false)}>Close</Button>
+            </Modal.Actions>
+        </Modal>
+    );
+});
+
+const GameTable = observer((props: { title: string; games: IGameInfo[]; loading: boolean; settings: SettingsModel }) => {
+    return (
+        <div className="game-table">
+            <h3>{props.title}</h3>
+            <Table unstackable celled selectable>
+                <Table.Header>
+                    <Table.HeaderCell>Name</Table.HeaderCell>
+                    <Table.HeaderCell>Platforms</Table.HeaderCell>
+                    <Table.HeaderCell>Release</Table.HeaderCell>
+                </Table.Header>
+                <Table.Body>
+                    {props.games.map(g => (
+                        <Table.Row>
+                            <Table.Cell>
+                                <a href={g.link} target="_blank">
+                                    {g.name}
+                                </a>
+                            </Table.Cell>
+                            <Table.Cell>
+                                <PlatformIcons settings={props.settings} platforms={g.platforms} />
+                            </Table.Cell>
+                            <Table.Cell>{moment(g.release).fromNow()}</Table.Cell>
+                        </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
+        </div>
     );
 });

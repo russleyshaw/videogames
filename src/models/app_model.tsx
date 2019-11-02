@@ -1,18 +1,13 @@
-import { observable } from "mobx";
+import { observable, computed, action, runInAction } from "mobx";
 import moment from "moment";
-import { Intent } from "@blueprintjs/core";
 
-import { IGameInfo, getGames, getEstimatedReleaseDate } from "./gbapi";
-import { compareDates } from "./util";
-import { appToaster } from "./toaster";
+import { IGameInfo, getGames, getEstimatedReleaseDate } from "../gbapi";
+import { compareDates } from "../util";
+import settings from "./settings_store";
 
-const APIKEY_KEY = "apiKey";
 const LASTPULLED_KEY = "lastPulled";
 const GAMES_KEY = "gamesCache";
 export default class AppModel {
-    @observable
-    apiKey: string | undefined;
-
     @observable
     games: Map<number, IGameInfo> = new Map();
 
@@ -22,24 +17,11 @@ export default class AppModel {
     @observable
     lastCached: Date | undefined;
 
+    @observable
+    isSettingsOpen: boolean = false;
+
     constructor() {
-        const apiKey = localStorage.getItem(APIKEY_KEY);
-        if (apiKey != null && apiKey != "") {
-            this.apiKey = apiKey;
-            // this.updateGames();
-        }
-
         this.loadGameCache();
-    }
-
-    setApiKey(apiKey: string) {
-        this.apiKey = apiKey;
-        localStorage.setItem(APIKEY_KEY, this.apiKey);
-        this.updateGames();
-    }
-    clearApiKey() {
-        localStorage.removeItem(APIKEY_KEY);
-        this.apiKey = undefined;
     }
 
     saveGameCache() {
@@ -56,9 +38,6 @@ export default class AppModel {
 
         if (lastPulled != null) {
             this.lastCached = new Date(lastPulled);
-            appToaster.show({
-                message: `Last pulled ${moment(this.lastCached).fromNow()}.`
-            });
         }
 
         if (gameData == null) return undefined;
@@ -66,20 +45,13 @@ export default class AppModel {
         try {
             const games: IGameInfo[] = JSON.parse(gameData).map((g: any) => ({ ...g, release: new Date(g.release) }));
             this.games = new Map(games.map(g => [g.id, g]));
-            appToaster.show({
-                message: `Found ${this.games.size} games.`
-            });
         } catch (e) {
-            appToaster.show({
-                message: `Failed to parse previously stored games. ${e.toString()}`,
-                intent: Intent.WARNING
-            });
             console.warn("Failed to parse games storage.");
             return undefined;
         }
     }
 
-    async updateGames(force?: boolean): Promise<void> {
+    async updateGames(): Promise<void> {
         const now = new Date();
         const nextMonth = moment(now)
             .add(1, "month")
@@ -88,25 +60,12 @@ export default class AppModel {
             .subtract(1, "month")
             .toDate();
 
-        if (this.apiKey == null) {
+        const apiKey = settings.apiKey;
+        if (apiKey == null) {
             return;
         }
 
-        if (this.lastCached != null && moment.duration(moment(now).diff(this.lastCached)).asHours() < 1 && force != true) {
-            appToaster.show({
-                message: `Polled recently (${moment(this.lastCached).fromNow()}). Skipping.`
-            });
-            return;
-        }
-
-        const apiKey = this.apiKey;
         this.isLoadingGames = true;
-        appToaster.show(
-            {
-                message: "Loading new releases..."
-            },
-            "loading-releases"
-        );
 
         const responses = await Promise.all(
             [now, nextMonth, lastMonth].map(date =>
@@ -136,24 +95,20 @@ export default class AppModel {
         }
 
         this.saveGameCache();
-        appToaster.show(
-            {
-                message: `Loaded ${this.games.size} releases!`,
-                intent: Intent.SUCCESS
-            },
-            "loading-releases"
-        );
+
         this.isLoadingGames = false;
     }
 
-    getUpcomingGames(): IGameInfo[] {
+    @computed
+    get upcomingGames(): IGameInfo[] {
         const now = new Date();
         return Array.from(this.games.values())
             .filter(g => g.release > now)
             .sort((a, b) => compareDates(a.release, b.release));
     }
 
-    getReleasedGames(): IGameInfo[] {
+    @computed
+    get releasedGames(): IGameInfo[] {
         const now = new Date();
         return Array.from(this.games.values())
             .filter(g => g.release < now)

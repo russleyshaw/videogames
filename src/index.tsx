@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import AppModel from "./app_model";
 import App from "./app_view";
 
-import "./style.scss";
+import "./style/style.scss";
+import appStore from "./models/app_store";
+import settingsStore from "./models/settings_store";
 
-const model = new AppModel();
-
-ReactDOM.render(<App model={model} />, document.getElementById("root"));
+ReactDOM.render(<App app={appStore} settings={settingsStore} />, document.getElementById("root"));
