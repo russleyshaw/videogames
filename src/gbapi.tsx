@@ -1,13 +1,7 @@
 import fetchJsonp from "fetch-jsonp";
 import moment from "moment";
-
-export interface IGameInfo {
-    id: number;
-    name: string;
-    release: Date;
-    link: string;
-    platforms: string[];
-}
+import { GAMES_API_BASEURL } from "./constants";
+import { IPlatformInfo } from "./types";
 
 export interface IGbApiGamesResult {
     id: number;
@@ -23,11 +17,7 @@ export interface IGbApiGamesResult {
     expected_release_quarter?: number;
     expected_release_year?: number;
 
-    platforms?: Array<{
-        id: number;
-        name: string;
-        abbreviation: string;
-    }>;
+    platforms?: IPlatformInfo[];
 }
 
 export interface IGBApiGames {
@@ -47,7 +37,7 @@ export interface IGBApiGamesOptions {
     expected_release_year?: number;
 }
 export async function getGames(options: IGBApiGamesOptions): Promise<IGBApiGames> {
-    const url = new URL("https://giantbomb.com/api/games");
+    const url = new URL(GAMES_API_BASEURL);
     url.searchParams.set("format", "jsonp");
     url.searchParams.set("api_key", options.apiKey);
     const filters = [];

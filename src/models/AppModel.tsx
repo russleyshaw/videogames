@@ -1,12 +1,11 @@
 import { observable, computed, action, runInAction } from "mobx";
 import moment from "moment";
 
-import { IGameInfo, getGames, getEstimatedReleaseDate } from "../gbapi";
-import { compareDates } from "../util";
-import settings from "./settings_store";
+import { getGames, getEstimatedReleaseDate } from "../gbapi";
+import { compareDates, resolveAllSeq } from "../util";
+import { IGameInfo } from "../types";
+import { GAME_CACHE_KEY } from "../constants";
 
-const LASTPULLED_KEY = "lastPulled";
-const GAMES_KEY = "gamesCache";
 export default class AppModel {
     @observable
     games: Map<number, IGameInfo> = new Map();
@@ -15,7 +14,7 @@ export default class AppModel {
     isLoadingGames: boolean = false;
 
     @observable
-    lastCached: Date | undefined;
+    loadingProgress: number = 0;
 
     @observable
     isSettingsOpen: boolean = false;
@@ -29,19 +28,12 @@ export default class AppModel {
 
     saveGameCache() {
         const gameData = JSON.stringify(Array.from(this.games.values()).map(g => ({ ...g, release: g.release.toISOString() })));
-        this.lastCached = new Date();
 
-        localStorage.setItem(LASTPULLED_KEY, this.lastCached.toISOString());
-        localStorage.setItem(GAMES_KEY, gameData);
+        localStorage.setItem(GAME_CACHE_KEY, gameData);
     }
 
     loadGameCache(): IGameInfo[] | undefined {
-        const gameData = localStorage.getItem(GAMES_KEY);
-        const lastPulled = localStorage.getItem(LASTPULLED_KEY);
-
-        if (lastPulled != null) {
-            this.lastCached = new Date(lastPulled);
-        }
+        const gameData = localStorage.getItem(GAME_CACHE_KEY);
 
         if (gameData == null) return undefined;
 
@@ -54,30 +46,35 @@ export default class AppModel {
         }
     }
 
-    async updateGames(): Promise<void> {
+    @action
+    async updateGames(apiKey: string): Promise<void> {
         const now = new Date();
-        const nextMonth = moment(now)
-            .add(1, "month")
-            .toDate();
-        const lastMonth = moment(now)
-            .subtract(1, "month")
-            .toDate();
-
-        const apiKey = settings.apiKey;
-        if (apiKey == null) {
-            return;
-        }
+        const months = [
+            now,
+            moment(now)
+                .add(1, "month")
+                .toDate(),
+            moment(now)
+                .subtract(1, "month")
+                .toDate()
+        ];
 
         this.isLoadingGames = true;
+        this.loadingProgress = 0;
+        let loadedCount = 0;
+        let totalCount = months.length;
 
-        const responses = await Promise.all(
-            [now, nextMonth, lastMonth].map(date =>
-                getGames({
+        const responses = await resolveAllSeq(
+            months.map(async date => {
+                const games = await getGames({
                     apiKey,
                     expected_release_month: date.getMonth() + 1,
                     expected_release_year: date.getFullYear()
-                })
-            )
+                });
+                totalCount++;
+                this.loadingProgress = loadedCount / totalCount;
+                return games;
+            })
         );
 
         for (const res of responses) {
@@ -90,7 +87,11 @@ export default class AppModel {
                 this.games.set(entry.id, {
                     id: entry.id,
                     name: entry.name,
-                    platforms: (entry.platforms || []).map(p => p.abbreviation),
+                    platforms: (entry.platforms || []).map(e => ({
+                        id: e.id == null ? -1 : e.id,
+                        abbreviation: e.abbreviation || "UNKN",
+                        name: e.name || "Unknown"
+                    })),
                     release,
                     link: entry.site_detail_url
                 });
