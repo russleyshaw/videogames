@@ -5,7 +5,7 @@ import moment from "moment";
 import AppModel from "./models/app_model";
 import { IGameInfo } from "./gbapi";
 
-import { Button, Table, Input, Menu, Modal, ButtonProps, Message, Checkbox, IconProps, Icon } from "semantic-ui-react";
+import { Button, Table, Input, Menu, Modal, ButtonProps, Message, Checkbox, IconProps, Icon, Popup } from "semantic-ui-react";
 import SettingsModel from "./models/settings_model";
 import PlatformIcons from "./components/PlatformIcons";
 import AboutDialog from "./components/AboutDialog";
@@ -84,6 +84,14 @@ const SettingsDialog = observer((props: IModels) => {
                         onClick={() => settings.cyclePlatformStyle()}
                     />
                 </p>
+                <p>
+                    <Checkbox
+                        label="Relative Release Dates"
+                        toggle
+                        checked={settings.releaseStyle === "relative"}
+                        onClick={() => settings.cycleReleaseStyle()}
+                    />
+                </p>
             </Modal.Content>
             <Modal.Actions>
                 <Button onClick={() => (app.isSettingsOpen = false)}>Close</Button>
@@ -103,19 +111,39 @@ const GameTable = observer((props: { title: string; games: IGameInfo[]; loading:
                     <Table.HeaderCell>Release</Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
-                    {props.games.map(g => (
-                        <Table.Row>
-                            <Table.Cell>
-                                <a href={g.link} target="_blank">
-                                    {g.name}
-                                </a>
-                            </Table.Cell>
-                            <Table.Cell>
-                                <PlatformIcons settings={props.settings} platforms={g.platforms} />
-                            </Table.Cell>
-                            <Table.Cell>{moment(g.release).fromNow()}</Table.Cell>
-                        </Table.Row>
-                    ))}
+                    {props.games.map(g => {
+                        return (
+                            <Table.Row>
+                                <Table.Cell>
+                                    <a href={g.link} target="_blank">
+                                        {g.name}
+                                    </a>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <PlatformIcons settings={props.settings} platforms={g.platforms} />
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Popup
+                                        position="top center"
+                                        trigger={
+                                            <span>
+                                                {props.settings.releaseStyle === "relative"
+                                                    ? moment(g.release).fromNow()
+                                                    : moment(g.release).format("MM/DD/YYYY")}
+                                            </span>
+                                        }
+                                        content={
+                                            <span>
+                                                {props.settings.releaseStyle === "absolute"
+                                                    ? moment(g.release).fromNow()
+                                                    : moment(g.release).format("MM/DD/YYYY")}
+                                            </span>
+                                        }
+                                    />
+                                </Table.Cell>
+                            </Table.Row>
+                        );
+                    })}
                 </Table.Body>
             </Table>
         </div>
