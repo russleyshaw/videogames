@@ -1,5 +1,4 @@
-import fetch from "node-fetch";
-import moment from "moment";
+import fetch from "isomorphic-fetch";
 
 const GAMES_API_BASEURL = "https://giantbomb.com/api/games";
 
