@@ -39,17 +39,16 @@ export async function main(): Promise<void> {
         )
     );
 
-    console.log(`Found ${games.length} releases.`);
-
-    const solidReleases = games.filter(
-        g =>
-            g.expected_release_day != null &&
-            g.expected_release_month != null &&
-            g.expected_release_year != null
+    // Some stats
+    console.log(`Found ${games.length} games total.`);
+    console.log(
+        `Found ${games.filter(g => g.original_release_date == null).length} unreleased games`
+    );
+    console.log(
+        `Found ${games.filter(g => g.original_release_date != null).length} released games.`
     );
 
-    console.log(`Found ${solidReleases.length} releases with dates.`);
-    await fsp.writeFile("games.json", JSON.stringify(solidReleases));
+    await fsp.writeFile("games.json", JSON.stringify(games));
 }
 
 main();

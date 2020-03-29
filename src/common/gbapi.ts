@@ -37,6 +37,7 @@ export interface GetGamesResult {
 export interface GetGamesOptions {
     apiKey: string;
     offset?: number;
+    field_list?: string[];
     filters?: {
         expected_release_day?: number;
         expected_release_month?: number;
@@ -57,6 +58,10 @@ export async function getGames(opts: GetGamesOptions): Promise<GetGamesResult> {
         filters.push(`${k}:${encodeURIComponent(v)}`);
     }
     url.searchParams.set("filter", filters.join(","));
+
+    if (opts.field_list != null && opts.field_list.length > 0) {
+        url.searchParams.set("field_list", opts.field_list.join(","));
+    }
 
     // Offset
     if (opts.offset != null) {
