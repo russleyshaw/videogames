@@ -7,7 +7,10 @@ import { promises as fsp } from "fs";
 import { asNotNil } from "../common/util";
 import * as gbapi from "../common/gbapi";
 
-const API_KEY = asNotNil(process.env.API_KEY, "Expected envvar API_KEY to be provided.");
+const API_KEY = asNotNil(
+    process.env.API_KEY,
+    "Expected envvar API_KEY to be provided. Get yours at https://giantbomb.com/api !"
+);
 
 export async function main(): Promise<void> {
     const now = moment();

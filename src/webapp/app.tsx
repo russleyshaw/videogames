@@ -17,8 +17,13 @@ import {
     Paper,
     Container,
     Grid,
-    Box
+    Box,
+    Avatar,
+    Icon,
+    Typography,
+    useTheme
 } from "@material-ui/core";
+import PlatformAvatar from "./PlatformAvatar";
 
 interface GameData {
     id: number;
@@ -110,19 +115,36 @@ const released = _.sortBy(
     g => -g.release.valueOf()
 );
 const upcoming = _.sortBy(
-    datedGames.filter(g => g.release.isAfter(now)),
-    g => g.release.valueOf(),
-    g => !g.firm
+    datedGames.filter(g => g.release.isAfter(now) && g.firm),
+    g => g.release.valueOf()
+);
+
+const whenever = _.sortBy(
+    datedGames.filter(g => g.release.isAfter(now) && !g.firm),
+    g => g.release.valueOf()
 );
 
 export default function App(): JSX.Element {
+    const theme = useTheme();
+
     return (
         <Container maxWidth="xl">
-            <Grid container spacing={2}>
-                <Grid xs={12} md={6} item>
-                    <GameList title="Upcoming" games={upcoming} />
+            <Typography style={{ margin: theme.spacing(2) }} variant="h3" align="center">
+                Video Games
+            </Typography>
+
+            <Grid style={{ overflowY: "auto" }} container spacing={2}>
+                <Grid xs={12} lg={6} xl={8} item>
+                    <Grid container spacing={2}>
+                        <Grid xs={12} xl={6} item>
+                            <GameList title="Upcoming" games={upcoming} />
+                        </Grid>
+                        <Grid xs={12} xl={6} item>
+                            <GameList title="Whenever" games={whenever} />
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid xs={12} md={6} item>
+                <Grid xs={12} lg={6} xl={4} item>
                     <GameList title="Released" games={released} />
                 </Grid>
             </Grid>
@@ -136,10 +158,13 @@ interface GameListProps {
 }
 
 function GameList(props: GameListProps): JSX.Element {
+    const theme = useTheme();
     return (
         <Paper>
             <Grid container>
-                <h3>{props.title}</h3>
+                <Typography style={{ margin: theme.spacing(2) }} align="center" variant="h4">
+                    {props.title}
+                </Typography>
                 <TableContainer>
                     <Table>
                         <TableHead>
@@ -162,18 +187,17 @@ function GameList(props: GameListProps): JSX.Element {
                                         </Link>
                                     </TableCell>
                                     <TableCell>
-                                        {g.platforms.map(p => (
-                                            <Chip
-                                                component="a"
-                                                size="small"
-                                                clickable
-                                                key={p.abbrev}
-                                                label={p.abbrev}
-                                                href={p.link}
-                                                title={p.name}
-                                                target="_blank"
-                                            />
-                                        ))}
+                                        <Grid container>
+                                            {g.platforms.map(p => (
+                                                <Grid item key={p.abbrev}>
+                                                    <Chip
+                                                        clickable
+                                                        label={p.abbrev}
+                                                        title={p.name}
+                                                    />
+                                                </Grid>
+                                            ))}
+                                        </Grid>
                                     </TableCell>
                                     <TableCell>
                                         {!g.firm ? "maybe " : ""}
