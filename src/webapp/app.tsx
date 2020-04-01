@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+
 import * as _ from "lodash";
 
 import moment from "moment";
@@ -12,18 +12,15 @@ import {
     TableHead,
     TableCell,
     TableRow,
-    Chip,
     Link,
     Paper,
     Container,
     Grid,
-    Box,
-    Avatar,
-    Icon,
     Typography,
-    useTheme
+    useTheme,
+    Tooltip
 } from "@material-ui/core";
-import PlatformAvatar from "./PlatformAvatar";
+import { getPlatformIconUrl, getPlatformOrder } from "./platforms";
 
 interface GameData {
     id: number;
@@ -33,13 +30,6 @@ interface GameData {
     firm: boolean;
     released: boolean;
     platforms: Array<PlatformData>;
-}
-
-interface PlatformData {
-    id: number;
-    abbrev: string;
-    name: string;
-    link: string;
 }
 
 const datedGames = parseRawGames();
@@ -129,25 +119,43 @@ export default function App(): JSX.Element {
 
     return (
         <Container maxWidth="xl">
-            <Typography style={{ margin: theme.spacing(2) }} variant="h3" align="center">
-                Video Games
-            </Typography>
+            <Tooltip title="A calendar of releasing and released games.">
+                <Typography style={{ margin: theme.spacing(2) }} variant="h3" align="center">
+                    Video Games
+                </Typography>
+            </Tooltip>
 
             <Grid style={{ overflowY: "auto" }} container spacing={2}>
                 <Grid xs={12} lg={6} xl={8} item>
                     <Grid container spacing={2}>
                         <Grid xs={12} xl={6} item>
-                            <GameList title="Upcoming" games={upcoming} />
+                            <GameList
+                                title="Upcoming"
+                                tooltip="Games with a release date in the near future."
+                                games={upcoming}
+                            />
                         </Grid>
                         <Grid xs={12} xl={6} item>
-                            <GameList title="Whenever" games={whenever} />
+                            <GameList
+                                title="Eventually"
+                                tooltip="Games with rough release windows. Games here may only have a month or quarter scheduled for release"
+                                games={whenever}
+                            />
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid xs={12} lg={6} xl={4} item>
-                    <GameList title="Released" games={released} />
+                    <GameList
+                        title="Released"
+                        tooltip="Games recently released."
+                        games={released}
+                    />
                 </Grid>
             </Grid>
+
+            <Typography style={{ margin: theme.spacing(2) }} align="right">
+                Data is courtesy of the <a href="https://www.giantbomb.com/">Giant Bomb</a> API.
+            </Typography>
         </Container>
     );
 }
@@ -155,6 +163,7 @@ export default function App(): JSX.Element {
 interface GameListProps {
     games: GameData[];
     title: string;
+    tooltip: string;
 }
 
 function GameList(props: GameListProps): JSX.Element {
@@ -162,9 +171,11 @@ function GameList(props: GameListProps): JSX.Element {
     return (
         <Paper>
             <Grid container>
-                <Typography style={{ margin: theme.spacing(2) }} align="center" variant="h4">
-                    {props.title}
-                </Typography>
+                <Tooltip title={props.tooltip}>
+                    <Typography style={{ margin: theme.spacing(2) }} align="center" variant="h4">
+                        {props.title}
+                    </Typography>
+                </Tooltip>
                 <TableContainer>
                     <Table>
                         <TableHead>
@@ -187,17 +198,7 @@ function GameList(props: GameListProps): JSX.Element {
                                         </Link>
                                     </TableCell>
                                     <TableCell>
-                                        <Grid container>
-                                            {g.platforms.map(p => (
-                                                <Grid item key={p.abbrev}>
-                                                    <Chip
-                                                        clickable
-                                                        label={p.abbrev}
-                                                        title={p.name}
-                                                    />
-                                                </Grid>
-                                            ))}
-                                        </Grid>
+                                        <Platforms platforms={g.platforms} />
                                     </TableCell>
                                     <TableCell>
                                         {!g.firm ? "maybe " : ""}
@@ -223,4 +224,29 @@ function fromNow(date: moment.Moment): string {
     }
 
     return date.fromNow();
+}
+
+function Platforms(props: { platforms: PlatformData[] }): JSX.Element {
+    const platformIconSize = 24;
+    const groups = _.sortBy(
+        Object.entries(_.groupBy(props.platforms, p => getPlatformIconUrl(p.abbrev))),
+        ([, ps]) => Math.min(...ps.map(p => getPlatformOrder(p.abbrev)))
+    );
+    return (
+        <React.Fragment>
+            {groups.map(([src, ps]) => {
+                const title = ps.map(p => p.name).join(", ");
+                return (
+                    <span key={ps[0].abbrev} style={{ marginRight: 4 }}>
+                        <Tooltip title={title}>
+                            <img
+                                style={{ width: platformIconSize, height: platformIconSize }}
+                                src={src}
+                            />
+                        </Tooltip>
+                    </span>
+                );
+            })}
+        </React.Fragment>
+    );
 }
