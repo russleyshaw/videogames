@@ -1,18 +1,18 @@
 // Known platform icons
-import windows from "./static/windows.svg";
-import xbox from "./static/xbox.svg";
-import playstation from "./static/playstation.svg";
-import nsw from "./static/nsw.svg";
-import stadia from "./static/stadia.svg";
-import android from "./static/android.svg";
-import linux from "./static/linux.svg";
-import apple from "./static/apple.svg";
-import amiga from "./static/amiga.svg";
-import c64 from "./static/c64.svg";
+import windows from "../../static/icons/windows.svg";
+import xbox from "../../static/icons/xbox.svg";
+import playstation from "../../static/icons/playstation.svg";
+import nsw from "../../static/icons/nsw.svg";
+import stadia from "../../static/icons/stadia.svg";
+import android from "../../static/icons/android.svg";
+import linux from "../../static/icons/linux.svg";
+import apple from "../../static/icons/apple.svg";
+import amiga from "../../static/icons/amiga.svg";
+import c64 from "../../static/icons/c64.svg";
 
-import quest from "./static/quest.svg";
+import quest from "../../static/icons/quest.svg";
 
-import unknownPlatform from "./static/unknown.svg";
+import unknownPlatform from "../../static/icons/unknown.svg";
 
 import { safeFindIndex } from "../common/util";
 
@@ -40,7 +40,7 @@ const PLATFORM_ABBREVS_ORDER = [
     "APTV",
 
     // Streaming
-    "STAD"
+    "STAD",
 ];
 
 export function getPlatformOrder(abbrev: string): number {

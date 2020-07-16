@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
         "target": "es2017",
-        "module": "ESNext",
-        "jsx": "react",
-        "lib": ["DOM"],
+        "module": "commonjs",
+        "lib": [],
         "sourceMap": true,
         "outDir": "dist",
+        "rootDir": "src",
         "strict": true,
 
         "moduleResolution": "node",

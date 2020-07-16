@@ -26,7 +26,9 @@ jobs:
                   API_KEY: ${{ secrets.API_KEY }}
 
             - name: Build
-              run: yarn build --public-url /videogames/
+              run: yarn build
+              env:
+                  PUBLIC_PATH: videogames
 
             - name: Prepare for deployment
               run: touch dist/.nojekyll

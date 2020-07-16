@@ -1,8 +1,8 @@
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
 
 import * as _ from "lodash";
-import moment from "moment";
+import * as moment from "moment";
 import { promises as fsp } from "fs";
 import { asNotNil } from "../common/util";
 import * as gbapi from "../common/gbapi";
@@ -21,11 +21,11 @@ export async function main(): Promise<void> {
     months.push({ month, year });
     months.push({
         month: month < 11 ? month + 1 : 0,
-        year: month < 11 ? year : year + 1
+        year: month < 11 ? year : year + 1,
     });
     months.push({
         month: month > 0 ? month - 1 : 11,
-        year: month > 0 ? year : year - 1
+        year: month > 0 ? year : year - 1,
     });
 
     const games = _.flatten(
@@ -35,8 +35,8 @@ export async function main(): Promise<void> {
                     apiKey: API_KEY,
                     filters: {
                         expected_release_month: d.month + 1,
-                        expected_release_year: d.year
-                    }
+                        expected_release_year: d.year,
+                    },
                 });
             })
         )

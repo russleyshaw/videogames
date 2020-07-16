@@ -1,4 +1,5 @@
-import fetch from "isomorphic-fetch";
+import * as fetch from "isomorphic-fetch";
+import * as urlLib from "url";
 
 const GAMES_API_BASEURL = "https://giantbomb.com/api/games";
 
@@ -47,7 +48,7 @@ export interface GetGamesOptions {
 }
 
 export async function getGames(opts: GetGamesOptions): Promise<GetGamesResult> {
-    const url = new URL(GAMES_API_BASEURL);
+    const url = new urlLib.URL(GAMES_API_BASEURL);
     url.searchParams.set("format", "json");
     url.searchParams.set("api_key", opts.apiKey);
 
@@ -68,7 +69,7 @@ export async function getGames(opts: GetGamesOptions): Promise<GetGamesResult> {
         url.searchParams.set("offset", opts.offset.toString());
     }
 
-    const result: GetGamesResult = await fetch(url.toString()).then(r => r.json());
+    const result: GetGamesResult = await fetch(url.toString()).then((r) => r.json());
     return result;
 }
 

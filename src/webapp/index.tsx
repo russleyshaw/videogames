@@ -1,14 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { ThemeProvider, createMuiTheme, CssBaseline } from "@material-ui/core";
-import App from "./app";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
-const theme = createMuiTheme({});
+import RootView from "./views/RootView";
 
-ReactDOM.render(
-    <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-    </ThemeProvider>,
-    document.getElementById("root")
-);
+ReactDOM.render(<RootView />, document.getElementById("root"));
