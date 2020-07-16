@@ -28,7 +28,7 @@ jobs:
             - name: Build
               run: yarn build
               env:
-                  PUBLIC_PATH: videogames
+                  PUBLIC_PATH: /videogames/
 
             - name: Prepare for deployment
               run: touch dist/.nojekyll
