@@ -27,6 +27,7 @@ const PLATFORM_ABBREVS_ORDER = [
     "PS4",
 
     // Consoles - Microsoft
+    "XSX",
     "XONE",
     "XBOX",
 
@@ -61,6 +62,7 @@ export function getPlatformIconUrl(abbrev: string): string {
             return windows;
         case "XONE":
         case "XBOX":
+        case "XSX":
             return xbox;
 
         case "PS4":
