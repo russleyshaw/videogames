@@ -7,7 +7,8 @@ import { endOfDay, endOfMonth, endOfQuarter, endOfYear, isAfter, isBefore, setDa
 import { GameData, NOW } from "../util";
 import GameList from "../components/GameList";
 
-import * as gamesJson from "../../../games.json";
+import gamesJson from "../../../games.json";
+console.log(gamesJson);
 
 function parseRawGames(gameData: typeof gamesJson): GameData[] {
     const result: GameData[] = [];

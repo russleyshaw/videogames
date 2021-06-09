@@ -85,7 +85,7 @@ module.exports = (_, args) => {
             ],
         },
         resolve: {
-            extensions: [".tsx", ".ts", ".js"],
+            extensions: [".tsx", ".ts", ".js", ".json"],
             alias,
         },
         output: {
