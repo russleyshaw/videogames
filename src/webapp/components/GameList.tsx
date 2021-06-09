@@ -17,9 +17,7 @@ export default observer((props: GameListProps) => {
     const loadingRow = (
         <tr>
             <td>Loading...</td>
-            <td>
-                ...
-            </td>
+            <td></td>
             <td>Soon</td>
         </tr>
     );

@@ -4,17 +4,12 @@ import { observer } from "mobx-react";
 
 import { endOfDay, endOfMonth, endOfQuarter, endOfYear, isAfter, isBefore, setDate, setQuarter, setYear, setMonth} from "date-fns";
 
-import { LoaderModel } from "../models/loader";
 import { GameData, NOW } from "../util";
 import GameList from "../components/GameList";
 
-const datedGamesLoader = new LoaderModel(async () => {
-    const gamesJson = await import("../../../games.json").then(m => (m as any).default as typeof m);
-    return parseRawGames(gamesJson);
-});
-datedGamesLoader.load();
+import * as gamesJson from "../../../games.json";
 
-function parseRawGames(gameData: typeof import("../../../games.json")): GameData[] {
+function parseRawGames(gameData: typeof gamesJson): GameData[] {
     const result: GameData[] = [];
     for (const g of gameData) {
         const now = new Date();
@@ -72,10 +67,9 @@ function parseRawGames(gameData: typeof import("../../../games.json")): GameData
     return result;
 }
 
-export default observer(() => {
+const datedGames = parseRawGames(gamesJson);
 
-    const isLoading = datedGamesLoader.result.status === "loading";
-    const datedGames = datedGamesLoader.value ?? [];
+export default observer(() => {
 
     const released = _.sortBy(
         datedGames.filter(g => isBefore(g.release, NOW)),
@@ -99,7 +93,6 @@ export default observer(() => {
 
             <div>
                 <GameList
-                    loading={isLoading}
                     title="Upcoming"
                     tooltip="Games with a release date in the near future."
                     games={upcoming}
@@ -108,13 +101,11 @@ export default observer(() => {
                     title="Eventually"
                     tooltip="Games with rough release windows. Games here may only have a month or quarter scheduled for release"
                     games={whenever}
-                    loading={isLoading}
                 />
                 <GameList
                     title="Released"
                     tooltip="Games recently released."
                     games={released}
-                    loading={isLoading}
                 />
 
                 <p>
