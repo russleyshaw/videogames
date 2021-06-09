@@ -1,7 +1,6 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const path = require("path");
@@ -26,22 +25,6 @@ module.exports = (_, args) => {
             chunks: "all",
         },
     };
-
-    if (isDevMode) {
-        plugins.push(
-            new BundleAnalyzerPlugin({
-                openAnalyzer: false,
-            })
-        );
-        alias["react-dom"] = "@hot-loader/react-dom";
-    } else {
-        plugins.push(
-            new BundleAnalyzerPlugin({
-                analyzerMode: "static",
-                openAnalyzer: false,
-            })
-        );
-    }
 
     return {
         mode,
@@ -101,7 +84,6 @@ module.exports = (_, args) => {
                 },
             ],
         },
-        devtool: isDevMode ? "eval-source-map" : undefined,
         resolve: {
             extensions: [".tsx", ".ts", ".js"],
             alias,
