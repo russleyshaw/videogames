@@ -69,7 +69,7 @@ export async function getGames(opts: GetGamesOptions): Promise<GetGamesResult> {
         url.searchParams.set("offset", opts.offset.toString());
     }
 
-    const result: GetGamesResult = await fetch(url.toString()).then((r) => r.json());
+    const result: GetGamesResult = await fetch(url.toString()).then((r: any) => r.json());
     return result;
 }
 
