@@ -2,8 +2,6 @@ import * as React from "react";
 import { observer } from "mobx-react";
 import { sortBy, groupBy } from "lodash";
 
-import { Tooltip } from "@material-ui/core";
-
 import { getPlatformIconUrl, getPlatformOrder } from "../platforms";
 
 export interface PlatformProps {
@@ -22,12 +20,10 @@ export default observer((props: PlatformProps) => {
                 const title = ps.map(p => p.name).join(", ");
                 return (
                     <span key={ps[0].abbrev} style={{ marginRight: 4 }}>
-                        <Tooltip title={title}>
                             <img
                                 style={{ width: platformIconSize, height: platformIconSize }}
                                 src={src}
                             />
-                        </Tooltip>
                     </span>
                 );
             })}

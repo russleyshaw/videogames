@@ -18,7 +18,6 @@ module.exports = (_, args) => {
         new HtmlWebpackPlugin({ template: "./src/webapp/index.html" }),
         new ForkTsCheckerPlugin(),
         new MiniCssExtractPlugin(),
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ];
 
     const alias = {};
@@ -102,7 +101,7 @@ module.exports = (_, args) => {
                 },
             ],
         },
-        devtool: isDevMode ? "eval-source-map" : "none",
+        devtool: isDevMode ? "eval-source-map" : undefined,
         resolve: {
             extensions: [".tsx", ".ts", ".js"],
             alias,

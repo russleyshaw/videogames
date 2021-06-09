@@ -1,21 +1,7 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 
-import {
-    TableContainer,
-    Table,
-    TableBody,
-    TableHead,
-    TableCell,
-    TableRow,
-    Link,
-    Paper,
-    Grid,
-    Typography,
-    useTheme,
-    Tooltip,
-    CircularProgress,
-} from "@material-ui/core";
+
 import Platforms from "./Platforms";
 import { GameData, fromNow } from "../util";
 
@@ -27,56 +13,49 @@ export interface GameListProps {
 }
 
 export default observer((props: GameListProps) => {
-    const theme = useTheme();
 
     const loadingRow = (
-        <TableRow key="loading">
-            <TableCell>Loading...</TableCell>
-            <TableCell>
-                <CircularProgress />
-            </TableCell>
-            <TableCell>Soon</TableCell>
-        </TableRow>
+        <tr>
+            <td>Loading...</td>
+            <td>
+                ...
+            </td>
+            <td>Soon</td>
+        </tr>
     );
 
     const gameRows = props.games.map(g => (
-        <TableRow key={g.name}>
-            <TableCell>
-                <Link href={g.link} rel="noopener noreferrer" target="_blank">
+        <tr key={g.name}>
+            <td>
+                <a href={g.link} rel="noopener noreferrer" target="_blank">
                     {g.name}
-                </Link>
-            </TableCell>
-            <TableCell>
+                </a>
+            </td>
+            <td>
                 <Platforms platforms={g.platforms} />
-            </TableCell>
-            <TableCell>
+            </td>
+            <td>
                 {!g.firm ? "maybe " : ""}
                 {fromNow(g.release)}
-            </TableCell>
-        </TableRow>
+            </td>
+        </tr>
     ));
 
     return (
-        <Paper>
-            <Grid container>
-                <Tooltip title={props.tooltip}>
-                    <Typography style={{ margin: theme.spacing(2) }} align="center" variant="h4">
-                        {props.title}
-                    </Typography>
-                </Tooltip>
-                <TableContainer>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Platforms</TableCell>
-                                <TableCell>Release</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>{props.loading ? loadingRow : gameRows}</TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>
-        </Paper>
+        <div>
+            <h4>
+                {props.title}
+            </h4>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Platforms</td>
+                        <td>Release</td>
+                    </tr>
+                </thead>
+                <tbody>{props.loading ? loadingRow : gameRows}</tbody>
+            </table>
+        </div>
     );
 });

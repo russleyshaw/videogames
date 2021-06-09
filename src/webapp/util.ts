@@ -1,28 +1,28 @@
-import * as moment from "moment";
+import { addDays, startOfDay, formatDistanceToNow } from "date-fns";
 
 export interface GameData {
     id: number;
     name: string;
     link: string;
-    release: moment.Moment;
+    release: Date;
     firm: boolean;
     released: boolean;
     platforms: Array<PlatformData>;
 }
 
-export const NOW = moment();
-export const START_OF_TODAY = moment(NOW).startOf("date");
-export const START_OF_TOMORROW = moment(NOW).add(1, "day").startOf("date");
-export const START_OF_NEXT_DAY = moment(NOW).add(2, "day").startOf("date");
+export const NOW = new Date();
+export const START_OF_TODAY = startOfDay(NOW);
+export const START_OF_TOMORROW = startOfDay(addDays(NOW, 1));
+export const START_OF_NEXT_DAY = startOfDay(addDays(NOW, 2));;
 
-export function fromNow(date: moment.Moment): string {
-    if (date.isBetween(START_OF_TODAY, START_OF_TOMORROW)) {
+export function fromNow(date: Date): string {
+    if (START_OF_TODAY < date && START_OF_TOMORROW > date) {
         return "Today!";
     }
 
-    if (date.isBetween(START_OF_TOMORROW, START_OF_NEXT_DAY)) {
+    if (START_OF_TOMORROW < date && START_OF_NEXT_DAY > date) {
         return "Tomorrow!";
     }
 
-    return date.fromNow();
+    return formatDistanceToNow(date);
 }

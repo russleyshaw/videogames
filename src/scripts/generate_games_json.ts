@@ -2,10 +2,10 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import * as _ from "lodash";
-import * as moment from "moment";
 import { promises as fsp } from "fs";
 import { asNotNil } from "../common/util";
 import * as gbapi from "../common/gbapi";
+import { getMonth, getYear } from "date-fns";
 
 const API_KEY = asNotNil(
     process.env.API_KEY,
@@ -13,9 +13,9 @@ const API_KEY = asNotNil(
 );
 
 export async function main(): Promise<void> {
-    const now = moment();
-    const month = now.month();
-    const year = now.year();
+    const now = new Date();
+    const month = getMonth(now);
+    const year = getYear(now);
 
     const months: Array<{ month: number; year: number }> = [];
     months.push({ month, year });
