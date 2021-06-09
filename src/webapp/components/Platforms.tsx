@@ -21,6 +21,8 @@ export default observer((props: PlatformProps) => {
                 return (
                     <span key={ps[0].abbrev} style={{ marginRight: 4 }}>
                             <img
+                                title={title}
+                                alt={title}
                                 style={{ width: platformIconSize, height: platformIconSize }}
                                 src={src}
                             />
