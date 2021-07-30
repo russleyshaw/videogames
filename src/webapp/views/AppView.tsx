@@ -8,6 +8,7 @@ import { GameData, NOW } from "../util";
 import GameList from "../components/GameList";
 
 import gamesJson from "../../../games.json";
+import styled from "styled-components";
 console.log(gamesJson);
 
 function parseRawGames(gameData: typeof gamesJson): GameData[] {
@@ -70,6 +71,11 @@ function parseRawGames(gameData: typeof gamesJson): GameData[] {
 
 const datedGames = parseRawGames(gamesJson);
 
+const GameListsDiv = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+`;
+
 export default observer(() => {
 
     const released = _.sortBy(
@@ -93,6 +99,7 @@ export default observer(() => {
             </h3>
 
             <div>
+                <GameListsDiv>
                 <GameList
                     title="Upcoming"
                     tooltip="Games with a release date in the near future."
@@ -108,6 +115,7 @@ export default observer(() => {
                     tooltip="Games recently released."
                     games={released}
                 />
+                </GameListsDiv>
 
                 <p>
                     Data is courtesy of the <a href="https://www.giantbomb.com/">Giant Bomb</a> API.
