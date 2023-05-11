@@ -2,13 +2,25 @@ import * as React from "react";
 import * as _ from "lodash";
 import { observer } from "mobx-react";
 
-import { endOfDay, endOfMonth, endOfQuarter, endOfYear, isAfter, isBefore, setDate, setQuarter, setYear, setMonth} from "date-fns";
+import {
+    endOfDay,
+    endOfMonth,
+    endOfQuarter,
+    endOfYear,
+    isAfter,
+    isBefore,
+    setDate,
+    setQuarter,
+    setYear,
+    setMonth,
+} from "date-fns";
 
 import { GameData, NOW } from "../util";
 import GameList from "../components/GameList";
 
+import classes from "./AppView.module.scss";
+
 import gamesJson from "../../../games.json";
-import styled from "styled-components";
 console.log(gamesJson);
 
 function parseRawGames(gameData: typeof gamesJson): GameData[] {
@@ -71,13 +83,7 @@ function parseRawGames(gameData: typeof gamesJson): GameData[] {
 
 const datedGames = parseRawGames(gamesJson);
 
-const GameListsDiv = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-`;
-
 export default observer(() => {
-
     const released = _.sortBy(
         datedGames.filter(g => isBefore(g.release, NOW)),
         g => -g.release.valueOf()
@@ -93,33 +99,31 @@ export default observer(() => {
     );
 
     return (
-        <div>
-            <h3>
-                Video Games
-            </h3>
+        <div className={classes.root}>
+            <h1>Video Games</h1>
 
-            <div>
-                <GameListsDiv>
+            <span>
+                Data is courtesy of the <a href="https://www.giantbomb.com/">Giant Bomb</a> API.
+            </span>
+
+            <div className={classes.gameLists}>
                 <GameList
                     title="Upcoming"
-                    tooltip="Games with a release date in the near future."
+                    subtitle="Games with a release date in the near future."
                     games={upcoming}
                 />
                 <GameList
                     title="Eventually"
-                    tooltip="Games with rough release windows. Games here may only have a month or quarter scheduled for release"
+                    subtitle={
+                        <>
+                            Games with rough release windows.
+                            <br />
+                            These only have a month or quarter scheduled for release.
+                        </>
+                    }
                     games={whenever}
                 />
-                <GameList
-                    title="Released"
-                    tooltip="Games recently released."
-                    games={released}
-                />
-                </GameListsDiv>
-
-                <p>
-                    Data is courtesy of the <a href="https://www.giantbomb.com/">Giant Bomb</a> API.
-            </p>
+                <GameList title="Released" subtitle="Games recently released." games={released} />
             </div>
         </div>
     );

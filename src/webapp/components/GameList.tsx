@@ -1,59 +1,54 @@
-import * as React from "react";
 import { observer } from "mobx-react";
 
-
 import Platforms from "./Platforms";
+import classes from "./GameList.module.scss";
 import { GameData, fromNow } from "../util";
 
 export interface GameListProps {
     games: GameData[];
     title: string;
-    tooltip: string;
+    subtitle: string | JSX.Element;
     loading?: boolean;
 }
 
 export default observer((props: GameListProps) => {
-
     const loadingRow = (
-        <tr>
-            <td>Loading...</td>
-            <td></td>
-            <td>Soon</td>
-        </tr>
+        <>
+            <span>Loading...</span>
+            <span></span>
+            <span>Soon</span>
+        </>
     );
 
     const gameRows = props.games.map(g => (
-        <tr key={g.name}>
-            <td>
+        <>
+            <div className={classes.nameCol}>
                 <a href={g.link} rel="noopener noreferrer" target="_blank">
                     {g.name}
                 </a>
-            </td>
-            <td>
+            </div>
+            <div className={classes.platformCol}>
                 <Platforms platforms={g.platforms} />
-            </td>
-            <td>
-                {!g.firm ? "maybe " : ""}
-                {fromNow(g.release)}
-            </td>
-        </tr>
+            </div>
+            <div className={classes.releaseCol}>
+                <span>
+                    {!g.firm ? "maybe " : ""}
+                    {fromNow(g.release)}
+                </span>
+            </div>
+        </>
     ));
 
     return (
-        <div>
-            <h4>
-                {props.title}
-            </h4>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Name</td>
-                        <td>Platforms</td>
-                        <td>Release</td>
-                    </tr>
-                </thead>
-                <tbody>{props.loading ? loadingRow : gameRows}</tbody>
-            </table>
+        <div className={classes.root}>
+            <h3 className={classes.title}>{props.title}</h3>
+            <span className={classes.subtitle}>{props.subtitle}</span>
+            <div className={classes.gameTable}>
+                <div className={classes.nameCol}>Name</div>
+                <div className={classes.platformCol}>Platforms</div>
+                <div className={classes.releaseCol}>Release</div>
+                {props.loading ? loadingRow : gameRows}
+            </div>
         </div>
     );
 });

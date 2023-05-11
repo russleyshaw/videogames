@@ -1,0 +1,22 @@
+
+.root {
+    margin: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.gameLists {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+    }
+
+
+    gap: 1rem;
+
+    align-items: start;
+}

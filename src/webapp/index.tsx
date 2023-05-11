@@ -1,9 +1,6 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import RootView from "./views/RootView";
 
-ReactDOM.render(<RootView />, document.getElementById("root"));
+const root = createRoot(document.getElementById("root")!);
+root.render(<RootView />);

@@ -5,3 +5,16 @@ build/
 *.log
 .cache/
 .vscode/
+
+games.json
+
+# Yarn PnP
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.parcel-cache/

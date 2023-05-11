@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "es2017",
         "module": "ESNext",
-        "jsx": "react",
+        "jsx": "react-jsx",
         "lib": ["DOM"],
         "sourceMap": true,
         "outDir": "dist",
@@ -15,9 +15,9 @@
 
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
-        
+
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "exclude": ["webpack.config.js"]
+    "exclude": ["src/scripts/**/*"]
 }

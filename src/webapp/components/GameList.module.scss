@@ -1,0 +1,59 @@
+.root {
+    display: flex;
+    flex-direction: column;
+
+    background-color: #272727;
+    color: #f7f7f7;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem #000;
+
+    gap: 1rem;
+
+    padding: 1rem 0;
+
+}
+
+.title {
+    align-self: center;
+    font-size: 2rem;
+}
+
+.subtitle {
+    align-self: center;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.nameCol {
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.platformCol {
+    text-align: center;
+}
+
+.releaseCol {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.gameTable {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    justify-items: stretch;
+    align-items: stretch;
+    
+    & > * {
+        padding: 0.5rem 1rem; 
+    }
+    
+    & > *:nth-child(6n + 1), :nth-child(6n + 2), :nth-child(6n + 3) {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    
+}

@@ -1,18 +1,18 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import * as _ from "lodash";
-import { promises as fsp } from "fs";
-import { asNotNil } from "../common/util";
-import * as gbapi from "../common/gbapi";
 import { getMonth, getYear } from "date-fns";
+import { promises as fsp } from "fs";
+import * as _ from "lodash";
+import * as gbapi from "../common/gbapi";
+import { asNotNil } from "../common/util";
 
 const API_KEY = asNotNil(
     process.env.API_KEY,
     "Expected envvar API_KEY to be provided. Get yours at https://giantbomb.com/api !"
 );
 
-export async function main(): Promise<void> {
+async function main(): Promise<void> {
     const now = new Date();
     const month = getMonth(now);
     const year = getYear(now);
@@ -54,4 +54,4 @@ export async function main(): Promise<void> {
     await fsp.writeFile("games.json", JSON.stringify(games));
 }
 
-main();
+main().catch(e => console.error(e));

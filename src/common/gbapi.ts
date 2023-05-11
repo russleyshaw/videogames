@@ -1,4 +1,4 @@
-import * as fetch from "isomorphic-fetch";
+import axios from "axios";
 import * as urlLib from "url";
 
 const GAMES_API_BASEURL = "https://giantbomb.com/api/games";
@@ -69,8 +69,11 @@ export async function getGames(opts: GetGamesOptions): Promise<GetGamesResult> {
         url.searchParams.set("offset", opts.offset.toString());
     }
 
-    const result: GetGamesResult = await fetch(url.toString()).then((r: any) => r.json());
-    return result;
+    const response = await axios<GetGamesResult>({
+        method: "get",
+        url: url.toString(),
+    });
+    return response.data;
 }
 
 export async function getAllGames(opts: GetGamesOptions): Promise<Game[]> {
