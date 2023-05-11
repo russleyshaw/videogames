@@ -1,6 +1,12 @@
 import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import { Fragment } from "react";
 
-import RootView from "./views/RootView";
+import { router } from "./router";
 
 const root = createRoot(document.getElementById("root")!);
-root.render(<RootView />);
+root.render(
+    <Fragment>
+        <RouterProvider router={router} />
+    </Fragment>
+);

@@ -1,4 +1,3 @@
-import * as React from "react";
 import * as _ from "lodash";
 import { observer } from "mobx-react";
 
@@ -10,15 +9,15 @@ import {
     isAfter,
     isBefore,
     setDate,
+    setMonth,
     setQuarter,
     setYear,
-    setMonth,
 } from "date-fns";
 
-import { GameData, NOW } from "../util";
 import GameList from "../components/GameList";
+import { GameData, NOW } from "../util";
 
-import classes from "./AppView.module.scss";
+import * as classes from "./AppView.module.scss";
 
 import gamesJson from "../../../games.json";
 console.log(gamesJson);
@@ -83,7 +82,7 @@ function parseRawGames(gameData: typeof gamesJson): GameData[] {
 
 const datedGames = parseRawGames(gamesJson);
 
-export default observer(() => {
+export const AppView = observer(() => {
     const released = _.sortBy(
         datedGames.filter(g => isBefore(g.release, NOW)),
         g => -g.release.valueOf()

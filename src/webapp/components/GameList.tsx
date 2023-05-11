@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 
 import Platforms from "./Platforms";
-import classes from "./GameList.module.scss";
+import * as classes from "./GameList.module.scss";
 import { GameData, fromNow } from "../util";
 
 export interface GameListProps {
