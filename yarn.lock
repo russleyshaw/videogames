@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 7
+  version: 6
   cacheKey: 9
 
 "@arcanis/slice-ansi@npm:^1.1.1":
@@ -3038,9 +3038,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents>":
+"fsevents@patch:fsevents@npm%3A~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
     node-gyp: "npm:latest"
   conditions: os=darwin
@@ -5244,16 +5244,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@npm%3A^2.0.0-next.4#optional!builtin<compat/resolve>":
+"resolve@patch:resolve@npm%3A^2.0.0-next.4#~builtin<compat/resolve>":
   version: 2.0.0-next.4
-  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#optional!builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#~builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d"
   dependencies:
     is-core-module: "npm:^2.9.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 04c825cca722397520f79c0d7a9160259032af786efcc9d434c728e5e69117a9241da844a9ca3cc430fe63a0c41571c8ac9f193dd3216a3b65a14d7850f8ef5d
+  checksum: 8/4bf9f4f8a458607af90518ff73c67a4bc1a38b5a23fef2bb0ccbd45e8be89820a1639b637b0ba377eb2be9eedfb1739a84cde24fe4cd670c8207d8fea922b011
   languageName: node
   linkType: hard
 
@@ -5873,13 +5873,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@^5.0.4#~builtin<compat/typescript>":
   version: 5.0.4
-  resolution: "typescript@patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"
+  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=b5f058"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: e4296a207d18264eb9b17a912b0929c4e8be5a4e48aefa016e952eaa445e5a4ed363a72d9023f151dc7f100d48d4bfa35480aec199f123a664ef8a622355ae4f
+  checksum: 8/d26b6ba97b6d163c55dbdffd9bbb4c211667ebebc743accfeb2c8c0154aace7afd097b51165a72a5bad2cf65a4612259344ff60f8e642362aa1695c760d303ac
   languageName: node
   linkType: hard
 
@@ -5996,31 +5996,31 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "videogames@workspace:."
   dependencies:
-    "@parcel/transformer-sass": "npm:2.8.3"
-    "@types/lodash": "npm:^4.14.194"
-    "@types/node": "npm:^16.18.28"
-    "@types/react": "npm:^18.2.6"
-    "@types/react-dom": "npm:^18.2.4"
-    "@typescript-eslint/eslint-plugin": "npm:^5.59.5"
-    "@typescript-eslint/parser": "npm:^5.59.5"
-    "@yarnpkg/sdks": "npm:^3.0.0-rc.43"
-    axios: "npm:^1.4.0"
-    date-fns: "npm:^2.30.0"
-    dotenv: "npm:^16.0.3"
-    eslint: "npm:^8.40.0"
-    eslint-config-prettier: "npm:^8.8.0"
-    eslint-plugin-react: "npm:^7.32.2"
-    http-server: "npm:^14.1.1"
-    lodash: "npm:^4.17.21"
-    mobx: "npm:^6.9.0"
-    mobx-react: "npm:^7.6.0"
-    parcel: "npm:^2.8.3"
-    process: "npm:^0.11.10"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-router-dom: "npm:^6.11.1"
-    ts-node: "npm:^10.9.1"
-    typescript: "npm:^5.0.4"
+    "@parcel/transformer-sass": 2.8.3
+    "@types/lodash": ^4.14.194
+    "@types/node": ^16.18.28
+    "@types/react": ^18.2.6
+    "@types/react-dom": ^18.2.4
+    "@typescript-eslint/eslint-plugin": ^5.59.5
+    "@typescript-eslint/parser": ^5.59.5
+    "@yarnpkg/sdks": ^3.0.0-rc.43
+    axios: ^1.4.0
+    date-fns: ^2.30.0
+    dotenv: ^16.0.3
+    eslint: ^8.40.0
+    eslint-config-prettier: ^8.8.0
+    eslint-plugin-react: ^7.32.2
+    http-server: ^14.1.1
+    lodash: ^4.17.21
+    mobx: ^6.9.0
+    mobx-react: ^7.6.0
+    parcel: ^2.8.3
+    process: ^0.11.10
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-router-dom: ^6.11.1
+    ts-node: ^10.9.1
+    typescript: ^5.0.4
   languageName: unknown
   linkType: soft
 
@@ -6088,9 +6088,9 @@ __metadata:
   linkType: hard
 
 "word-wrap@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "word-wrap@npm:1.2.3"
-  checksum: 17267cdb6baa9d5452b0998531adafd2df52a25159f27cbb754b2fdcff4af8808019efe4c0a2bcc5ceb63becb30df07c792c0125ad21991266aefadb940df74a
+  version: 1.2.4
+  resolution: "word-wrap@npm:1.2.4"
+  checksum: 8/8f1f2e0a397c0e074ca225ba9f67baa23f99293bc064e31355d426ae91b8b3f6b5f6c1fc9ae5e9141178bb362d563f55e62fd8d5c31f2a77e3ade56cb3e35bd1
   languageName: node
   linkType: hard
 
