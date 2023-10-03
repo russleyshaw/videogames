@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 7
+  version: 6
   cacheKey: 9
 
 "@arcanis/slice-ansi@npm:^1.1.1":
@@ -2259,7 +2259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -2271,30 +2271,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.0.0":
-  version: 3.2.6
-  resolution: "debug@npm:3.2.6"
-  dependencies:
-    ms: "npm:^2.1.1"
-  checksum: 2ed2def05047d5f70c43a0572ad3db3a027a61f32bfa6a43d02a6e7d70d6abd1d78b7cd8fd4b89a2d026969b65fd4ab67c5702bc01cdb17d1347298aa69f7e09
-  languageName: node
-  linkType: hard
-
-"debug@npm:^3.2.7":
+"debug@npm:^3.0.0, debug@npm:^3.2.7":
   version: 3.2.7
   resolution: "debug@npm:3.2.7"
   dependencies:
     ms: "npm:^2.1.1"
   checksum: b98f479c1004d349128ba45f38fb1af53fa3ab1a3614f27c56e2cfbee34b58cbf7dc060fead0882a5b64924e49d1dd59fb796a5d90ba7b1987d72d426e199253
-  languageName: node
-  linkType: hard
-
-"debug@npm:^4.1.0, debug@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "debug@npm:4.1.1"
-  dependencies:
-    ms: "npm:^2.1.1"
-  checksum: d2a5a370d13858fa8831d318a4f67d2381cf336e3eea3dcbdd4489c636ec332c4825d97e11d764593afb3caba2ca294d1f645468575826b30e00031248e0e817
   languageName: node
   linkType: hard
 
@@ -3038,9 +3020,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents>":
+"fsevents@patch:fsevents@npm%3A~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
     node-gyp: "npm:latest"
   conditions: os=darwin
@@ -5244,16 +5226,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@npm%3A^2.0.0-next.4#optional!builtin<compat/resolve>":
+"resolve@patch:resolve@npm%3A^2.0.0-next.4#~builtin<compat/resolve>":
   version: 2.0.0-next.4
-  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#optional!builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#~builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d"
   dependencies:
     is-core-module: "npm:^2.9.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 04c825cca722397520f79c0d7a9160259032af786efcc9d434c728e5e69117a9241da844a9ca3cc430fe63a0c41571c8ac9f193dd3216a3b65a14d7850f8ef5d
+  checksum: 8/4bf9f4f8a458607af90518ff73c67a4bc1a38b5a23fef2bb0ccbd45e8be89820a1639b637b0ba377eb2be9eedfb1739a84cde24fe4cd670c8207d8fea922b011
   languageName: node
   linkType: hard
 
@@ -5873,13 +5855,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@^5.0.4#~builtin<compat/typescript>":
   version: 5.0.4
-  resolution: "typescript@patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"
+  resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=b5f058"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: e4296a207d18264eb9b17a912b0929c4e8be5a4e48aefa016e952eaa445e5a4ed363a72d9023f151dc7f100d48d4bfa35480aec199f123a664ef8a622355ae4f
+  checksum: 8/d26b6ba97b6d163c55dbdffd9bbb4c211667ebebc743accfeb2c8c0154aace7afd097b51165a72a5bad2cf65a4612259344ff60f8e642362aa1695c760d303ac
   languageName: node
   linkType: hard
 
@@ -5996,31 +5978,31 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "videogames@workspace:."
   dependencies:
-    "@parcel/transformer-sass": "npm:2.8.3"
-    "@types/lodash": "npm:^4.14.194"
-    "@types/node": "npm:^16.18.28"
-    "@types/react": "npm:^18.2.6"
-    "@types/react-dom": "npm:^18.2.4"
-    "@typescript-eslint/eslint-plugin": "npm:^5.59.5"
-    "@typescript-eslint/parser": "npm:^5.59.5"
-    "@yarnpkg/sdks": "npm:^3.0.0-rc.43"
-    axios: "npm:^1.4.0"
-    date-fns: "npm:^2.30.0"
-    dotenv: "npm:^16.0.3"
-    eslint: "npm:^8.40.0"
-    eslint-config-prettier: "npm:^8.8.0"
-    eslint-plugin-react: "npm:^7.32.2"
-    http-server: "npm:^14.1.1"
-    lodash: "npm:^4.17.21"
-    mobx: "npm:^6.9.0"
-    mobx-react: "npm:^7.6.0"
-    parcel: "npm:^2.8.3"
-    process: "npm:^0.11.10"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-router-dom: "npm:^6.11.1"
-    ts-node: "npm:^10.9.1"
-    typescript: "npm:^5.0.4"
+    "@parcel/transformer-sass": 2.8.3
+    "@types/lodash": ^4.14.194
+    "@types/node": ^16.18.28
+    "@types/react": ^18.2.6
+    "@types/react-dom": ^18.2.4
+    "@typescript-eslint/eslint-plugin": ^5.59.5
+    "@typescript-eslint/parser": ^5.59.5
+    "@yarnpkg/sdks": ^3.0.0-rc.43
+    axios: ^1.4.0
+    date-fns: ^2.30.0
+    dotenv: ^16.0.3
+    eslint: ^8.40.0
+    eslint-config-prettier: ^8.8.0
+    eslint-plugin-react: ^7.32.2
+    http-server: ^14.1.1
+    lodash: ^4.17.21
+    mobx: ^6.9.0
+    mobx-react: ^7.6.0
+    parcel: ^2.8.3
+    process: ^0.11.10
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-router-dom: ^6.11.1
+    ts-node: ^10.9.1
+    typescript: ^5.0.4
   languageName: unknown
   linkType: soft
 
